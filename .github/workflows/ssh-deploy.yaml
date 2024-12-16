@@ -1,0 +1,25 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+          
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          
+      - name: Deploy to Server
+        run: |
+          scp -r ./fastapi-ssh-deploy-example/* ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USERNAME }}/
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "cd /home/${{ secrets.SERVER_USERNAME }} && chmod +x ./deploy.sh && ./deploy.sh"
