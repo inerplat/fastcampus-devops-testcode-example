@@ -41,7 +41,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: inerplat/fastcampus-devops-testcode
+          slug: inerplat/fastcampus-devops-testcode-example
           files: python-example/coverage.xml
 
   container:
