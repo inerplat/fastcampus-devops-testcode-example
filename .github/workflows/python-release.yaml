@@ -1,4 +1,4 @@
-name: Python Calculator CI
+name: Python Release Production
 
 on:
   push:
@@ -10,9 +10,7 @@ on:
 
 permissions:
   checks: write
-  contents: write  # values.yaml 수정 후 push를 위해 write 필요
-  # Note: contents: write 로 설정, 별도의 토큰 사용시 token: ${{ secrets.<TOKEN> }} 가능
-
+  contents: write  
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -98,8 +96,6 @@ jobs:
         env:
           IMAGE_TAG: ${{ env.tag }}
         run: |
-          cd helm-repo
-          # 예: helm 차트가 deploy-k8s/demo에 있다고 가정 (레퍼런스 2 참고)
           yq eval -i '.image.tag = env(IMAGE_TAG)' 'k8s/chart/python/values.yaml'
 
       - name: Commit and Push changes
