@@ -1,0 +1,53 @@
+name: CD
+
+on:
+  # main 브랜치가 변경되었을 때 (PR 머지 포함)
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  HELM_PATH: k8s/chart/python
+  # 다른 환경 변수 필요시 추가
+
+jobs:
+  update-helm-version:
+    name: Update Helm Chart Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get Latest Tag
+        id: get-latest-tag
+        run: |
+          LATEST_TAG=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/inerplat/fastcampus-devops-testcode-example/tags \
+          | jq -r '.[0].name')
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          echo "Latest Tag is $LATEST_TAG"
+
+      - name: Install yq
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq
+          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Update Helm values
+        if: env.LATEST_TAG != ''
+        run: |
+          echo "Using version tag: $LATEST_TAG"
+          # 예: values.yaml에 .image.tag를 업데이트
+          yq eval -i '.image.tag = env(LATEST_TAG)' "${{ env.HELM_PATH }}/values.yaml"
+
+      - name: Commit & push
+        if: env.LATEST_TAG != ''
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "Github Actions"
+          git add ${{ env.HELM_PATH }}/values.yaml
+          git commit -m "Update Helm image.tag to $LATEST_TAG"
+          git push origin HEAD:main
