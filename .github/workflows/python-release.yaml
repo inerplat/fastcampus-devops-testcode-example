@@ -2,8 +2,10 @@ name: Python Release Production
 
 on:
   push:
+    branches:
+      - main     
     tags:
-      - "*"
+      - "*"  
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -95,10 +97,9 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
 
       - name: Update Helm values.yaml
-        env:
-          IMAGE_TAG: ${{ needs.container.outputs.TAG }}
         run: |
-          yq eval -i '.image.tag = env(IMAGE_TAG)' 'k8s/chart/python/values.yaml'
+          echo "${{ needs.container.outputs.TAG }}"
+          yq eval -i '.image.tag = ${{ needs.container.outputs.TAG }}' 'k8s/chart/python/values.yaml'
 
       - name: Commit and Push changes
         env:
