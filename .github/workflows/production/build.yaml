@@ -1,4 +1,4 @@
-name: Build
+name:  Production Build
 
 on:
   # 수동 실행
