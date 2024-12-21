@@ -96,7 +96,7 @@ jobs:
 
       - name: Update Helm values.yaml
         env:
-          IMAGE_TAG: ${{ needs.container.outputs.tag }}
+          IMAGE_TAG: ${{ needs.container.outputs.TAG }}
         run: |
           yq eval -i '.image.tag = env(IMAGE_TAG)' 'k8s/chart/python/values.yaml'
 
