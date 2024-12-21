@@ -12,6 +12,11 @@ env:
   IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/python-app
   IMAGE_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/python-app:latest
 
+permissions:
+  checks: write
+  contents: write
+  actions: write
+
 jobs:
   # (A) 테스트 Job
   test:
