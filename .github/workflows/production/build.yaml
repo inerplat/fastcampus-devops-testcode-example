@@ -1,13 +1,10 @@
 name:  Production Build
 
 on:
-  # 수동 실행
   workflow_dispatch:
-
-  # Release 브랜치 → main으로의 Pull Request가 'closed'(머지) 될 때
   pull_request:
     branches:
-      - "main"
+      - "release"
     types:
       - closed
 
