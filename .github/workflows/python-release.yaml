@@ -59,8 +59,8 @@ jobs:
           else
             echo "tag=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
           fi
-        outputs:
-          tag: $GITHUB_ENV
+
+          echo "TAG={$GITHUB_ENV}" >> $GITHUB_OUTPUT
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
