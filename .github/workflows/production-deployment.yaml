@@ -11,6 +11,11 @@ env:
   HELM_PATH: k8s/chart/python
   # 다른 환경 변수 필요시 추가
 
+permissions:
+  checks: write
+  contents: write
+  actions: write
+
 jobs:
   update-helm-version:
     name: Update Helm Chart Version
