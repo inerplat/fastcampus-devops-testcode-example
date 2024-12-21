@@ -25,5 +25,6 @@ def main():
         print("오류:", str(e))
 
 
+
 if __name__ == "__main__":
     main()
