@@ -17,8 +17,6 @@ def main():
             print("결과:", calculator.multiply(a, b))
         elif operator == '/':
             print("결과:", calculator.divide(a, b))
-        elif operator == '^':
-            print("결과:", a ** b) 
         else:
             print("잘못된 연산자입니다.")
     except ValueError as e:
