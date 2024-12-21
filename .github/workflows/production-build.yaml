@@ -83,6 +83,30 @@ jobs:
           else
             echo "NO_NEW_TAG=false" >> $GITHUB_ENV
             echo "NEW_TAG=${{ steps.version.outputs.new_tag }}" >> $GITHUB_ENV
+          fi
+
+      - name: Choose final tag
+        id: final_tag
+        run: |
+          if [ "${{ env.NO_NEW_TAG }}" = "false" ]; then
+            # semver 태그가 생성됨
+            echo "FINAL_TAG=${{ env.NEW_TAG }}" >> $GITHUB_ENV
+            echo "Using semver tag: ${{ env.NEW_TAG }}"
+          else
+            # semver 태그가 없으면 타임스탬프 태그
+            TIMESTAMP=$(date '+%Y%m%d-%H%M%S')
+            echo "FINAL_TAG=$TIMESTAMP" >> $GITHUB_ENV
+            echo "Using timestamp tag: $TIMESTAMP"
+          fi
+      
+      - name: create release
+        if: env.FINAL_TAG != ''
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.FINAL_TAG }}
+          name: "Release ${{ env.FINAL_TAG }}"
+          body: "Auto release by GitHub Actions."
 
       - name: Build & push Docker
         if: env.NO_NEW_TAG == 'false'
