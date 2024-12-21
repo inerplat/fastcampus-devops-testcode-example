@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  HELM_PATH: k8s/chart/python
+  HELM_PATH: k8s/python-production
   # 다른 환경 변수 필요시 추가
 
 permissions:
