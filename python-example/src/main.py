@@ -6,7 +6,7 @@ def main():
 
     try:
         a = int(input("첫 번째 숫자: "))
-        operator = input("연산자 (+, -, *, /): ")
+        operator = input("연산자 (+, -, *, /, ^): ")
         b = int(input("두 번째 숫자: "))
 
         if operator == '+':
@@ -17,6 +17,8 @@ def main():
             print("결과:", calculator.multiply(a, b))
         elif operator == '/':
             print("결과:", calculator.divide(a, b))
+        elif operator == '^':
+            print("결과:", a ** b) 
         else:
             print("잘못된 연산자입니다.")
     except ValueError as e:
