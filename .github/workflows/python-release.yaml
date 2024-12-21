@@ -83,7 +83,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.IMAGE_TAG }}-python
+            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.IMAGE_TAG }}
 
       # (F) yq 설치 (Helm values 수정용)
       - name: Install yq
