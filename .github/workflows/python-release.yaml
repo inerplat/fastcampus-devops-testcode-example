@@ -55,7 +55,7 @@ jobs:
 
       - name: Set Docker tag
         id: tag
-       run: |
+        run: |
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             echo "IMAGE_TAG=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
